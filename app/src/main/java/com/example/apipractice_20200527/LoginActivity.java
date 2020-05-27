@@ -3,10 +3,13 @@ package com.example.apipractice_20200527;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.apipractice_20200527.databinding.ActivityLoginBinding;
 import com.example.apipractice_20200527.utils.ServerUtil;
+
+import org.json.JSONObject;
 
 public class LoginActivity extends BaseActivity {
     ActivityLoginBinding binding;
@@ -26,7 +29,12 @@ public class LoginActivity extends BaseActivity {
                 String email = binding.emailEdt.getText().toString();
                 String password = binding.pwEdt.getText().toString();
 
-                ServerUtil.postRequestLogin(mContext,email,password,null);
+                ServerUtil.postRequestLogin(mContext, email, password, new ServerUtil.JsonResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject json) {
+                        Log.d("JSON확인",json.toString());
+                    }
+                });
             }
         });
     }
