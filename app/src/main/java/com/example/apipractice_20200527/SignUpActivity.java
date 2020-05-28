@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 public class SignUpActivity extends BaseActivity {
     ActivitySignUpBinding binding;
+    boolean idCheckOk = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,25 @@ public class SignUpActivity extends BaseActivity {
 
     @Override
     public void setupEvents() {
+        binding.emailEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // 이메일을 변경하면 무조건 중복검사를 실패로 변경 => 재검사 요구
+                idCheckOk = false;
+                binding.idCheckResultTxt.setText("중복 검사를 진행해주세요.");
+                checkSignUpEnable();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         binding.idCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,10 +57,11 @@ public class SignUpActivity extends BaseActivity {
                     @Override
                     public void onResponse(JSONObject json) {
                         Log.d("중복처리 응답확인",json.toString());
-                        boolean idCheckOk = false;
                         try {
                             int code = json.getInt("code");
+
                             if(code == 200){
+
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -128,7 +149,7 @@ public class SignUpActivity extends BaseActivity {
 //    하나라도 틀리면 회원가입 버튼 비활성화.
     void checkSignUpEnable() {
         boolean isAllPwOk = checkPasswords();
-        boolean isIdDuplCheckOk = idcheck;
+        boolean isIdDuplCheckOk = idCheckOk;
         binding.signUpBtn.setEnabled(isAllPwOk && isIdDuplCheckOk);
     }
 
