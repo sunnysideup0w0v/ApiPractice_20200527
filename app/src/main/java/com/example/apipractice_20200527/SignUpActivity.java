@@ -85,6 +85,8 @@ public class SignUpActivity extends BaseActivity {
 //    하나라도 틀리면 회원가입 버튼 비활성화.
     void checkSignUpEnable() {
         boolean isAllPwOk = checkPasswords();
+        boolean isIdDeuplCheckOk = true;
+        binding.signUpBtn.setEnabled(isAllPwOk && isIdDeuplCheckOk);
     }
 
     @Override
