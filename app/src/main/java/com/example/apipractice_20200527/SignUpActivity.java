@@ -20,6 +20,7 @@ import org.json.JSONObject;
 public class SignUpActivity extends BaseActivity {
     ActivitySignUpBinding binding;
     boolean idCheckOk = false;
+    boolean nickCheckOk = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,41 @@ public class SignUpActivity extends BaseActivity {
 
     @Override
     public void setupEvents() {
+
+        binding.signUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = binding.emailEdt.getText().toString();
+                String pw = binding.pwEdt.getText().toString();
+                String nick = binding.nickEdt.getText().toString();
+//                서버에 회원가입 기능 호출 => 가입 정보 전달 (serverUtil 회원가입 기능 필요)
+                ServerUtil.putRequestSignUp(mContext, email, pw, nick, new ServerUtil.JsonResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject json) {
+                        Log.d("회원가입 응답", json.toString());
+                    }
+                });
+            }
+        });
+
+        binding.nickEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                nickCheckOk = false;
+                binding.nickCheckResultTxt.setText("닉네임 중복 검사를 실행해주세요");
+                checkSignUpEnable();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 //        닉네임 중복확인 버튼 => 서버에 중복확인 요청 (문서 참조)
 //         => 성공일 경우 "사용해도 좋습니다." 토스트
 //         => 실패일 경우 " 중복된 닉네임입니다." 토스트
@@ -38,7 +74,7 @@ public class SignUpActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String inputNick = binding.nickEdt.getText().toString();
-                ServerUtil.getRequestDuplicatedCheck(mContext, inputNick, "nick_name", new ServerUtil.JsonResponseHandler() {
+                ServerUtil.getRequestDuplicatedCheck(mContext, inputNick, "NICKNAME", new ServerUtil.JsonResponseHandler() {
                     @Override
                     public void onResponse(JSONObject json) {
                         Log.d("중복응답처리확인",json.toString());
@@ -49,6 +85,7 @@ public class SignUpActivity extends BaseActivity {
                                     @Override
                                     public void run() {
                                         binding.nickCheckResultTxt.setText("사용해도 좋은 닉네임입니다");
+                                        nickCheckOk = true;
                                     }
                                 });
                             } else {
@@ -60,6 +97,12 @@ public class SignUpActivity extends BaseActivity {
                                 });
 
                             }
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    checkSignUpEnable();
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -166,9 +209,9 @@ public class SignUpActivity extends BaseActivity {
             binding.pwCheckResultTxt.setText("비밀번호를 입력해주세요");
         } else if(pw.length()<8){
             binding.pwCheckResultTxt.setText("비밀번호가 너무 짧습니다");
-            isPwOk = true;
         } else {
             binding.pwCheckResultTxt.setText("사용해도 좋은 비밀번호입니다");
+            isPwOk = true;
         }
         boolean isPwRepeatOk = false;
         String pwRepeat = binding.pwRepeatEdt.getText().toString();
@@ -189,7 +232,12 @@ public class SignUpActivity extends BaseActivity {
     void checkSignUpEnable() {
         boolean isAllPwOk = checkPasswords();
         boolean isIdDuplCheckOk = idCheckOk;
-        binding.signUpBtn.setEnabled(isAllPwOk && isIdDuplCheckOk);
+
+        Log.d("로그확인!",isAllPwOk+"");
+        Log.d("로그확인2!",isIdDuplCheckOk+"");
+        Log.d("로그확인3!",nickCheckOk+"");
+
+        binding.signUpBtn.setEnabled(isAllPwOk && isIdDuplCheckOk && nickCheckOk);
     }
 
     @Override
