@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.apipractice_20200527.databinding.ActivityLoginBinding;
+import com.example.apipractice_20200527.utils.ContextUtil;
 import com.example.apipractice_20200527.utils.ServerUtil;
 
 import org.json.JSONException;
@@ -49,6 +50,8 @@ public class LoginActivity extends BaseActivity {
                                 Log.d("분석결과","로그인 성공!");
                                 JSONObject data = json.getJSONObject("data");
                                 String token = data.getString("token");
+
+                                ContextUtil.setLoginUserToken(mContext, token);
                             } else {
                                 Log.d("분석 결과","로그인 실패");
                                 final String failReason = json.getString("message");
