@@ -12,6 +12,7 @@ import java.io.IOException;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -61,4 +62,47 @@ public class ServerUtil {
             }
         });
     }
+
+    public static void getRequestDuplicatedCheck(Context context, String input, String checkType, final JsonResponseHandler handler){
+        OkHttpClient client = new OkHttpClient();
+//        get - 파라미터들이 모두 주소에 같이 적힌다
+//        요청할 때 파라미터를 주소에 모두 적어줘야한다
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(BASE_URL+"/user_check").newBuilder();
+        urlBuilder.addEncodedQueryParameter("type", checkType);
+        urlBuilder.addEncodedQueryParameter("value", input);
+        String completeUrl = urlBuilder.build().toString();
+        Log.d("완성된 URL",completeUrl);
+
+        Request request = new Request.Builder()
+                .url(completeUrl)
+                .get()
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String body = response.body().string();
+                try {
+                    JSONObject json = new JSONObject(body);
+                    if(handler != null){
+                        handler.onResponse(json);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("body",body);
+            }
+        });
+
+
+    }
+
+
+
+
 }

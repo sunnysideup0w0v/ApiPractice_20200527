@@ -6,9 +6,14 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.apipractice_20200527.databinding.ActivitySignUpBinding;
+import com.example.apipractice_20200527.utils.ServerUtil;
+
+import org.json.JSONObject;
 
 public class SignUpActivity extends BaseActivity {
     ActivitySignUpBinding binding;
@@ -22,6 +27,18 @@ public class SignUpActivity extends BaseActivity {
 
     @Override
     public void setupEvents() {
+        binding.idCheckBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputEmail = binding.emailEdt.getText().toString();
+                ServerUtil.getRequestDuplicatedCheck(mContext, inputEmail, "EMAIL", new ServerUtil.JsonResponseHandler() {
+                    @Override
+                    public void onResponse(JSONObject json) {
+                        Log.d("중복처리 응답확인",json.toString());
+                    }
+                });
+            }
+        });
         binding.pwEdt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
