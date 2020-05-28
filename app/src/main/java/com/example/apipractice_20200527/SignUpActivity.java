@@ -37,20 +37,24 @@ public class SignUpActivity extends BaseActivity {
                     @Override
                     public void onResponse(JSONObject json) {
                         Log.d("중복처리 응답확인",json.toString());
+                        boolean idCheckOk = false;
                         try {
                             int code = json.getInt("code");
                             if(code == 200){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext, "사용해도 좋은 아이디어 입니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "사용해도 좋은 아이디 입니다", Toast.LENGTH_SHORT).show();
+                                        binding.idCheckResultTxt.setText("사용해도 좋은 아이디 입니다");
+                                        idCheckOk = true;
                                     }
                                 });
                             } else {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(mContext, "중복되는 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mContext, "중복되는 아이디 입니다", Toast.LENGTH_SHORT).show();
+                                        binding.idCheckResultTxt.setText("중복되는 아이디 입니다");
                                     }
                                 });
                             }
@@ -124,8 +128,8 @@ public class SignUpActivity extends BaseActivity {
 //    하나라도 틀리면 회원가입 버튼 비활성화.
     void checkSignUpEnable() {
         boolean isAllPwOk = checkPasswords();
-        boolean isIdDeuplCheckOk = true;
-        binding.signUpBtn.setEnabled(isAllPwOk && isIdDeuplCheckOk);
+        boolean isIdDuplCheckOk = idcheck;
+        binding.signUpBtn.setEnabled(isAllPwOk && isIdDuplCheckOk);
     }
 
     @Override
