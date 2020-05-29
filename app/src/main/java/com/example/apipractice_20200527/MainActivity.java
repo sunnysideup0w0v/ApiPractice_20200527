@@ -41,15 +41,16 @@ public class MainActivity extends BaseActivity {
                         JSONObject data = json.getJSONObject("data");
                         JSONObject user = data.getJSONObject("user");
                         JSONObject topic = data.getJSONObject("topic");
-                        final Topic thisWeekTopic = Topic.getTopicFromJson(topic);
 
                         final User me = User.getUserFromJson(user);
+                        final Topic thisWeekTopic = Topic.getTopicFromJson(topic);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 binding.nickName.setText(me.getNickName());
                                 binding.emailTxt.setText(me.getEmail());
                                 Glide.with(mContext).load(thisWeekTopic.getImageUrl()).into(binding.topicImg);
+                                binding.topicTitleTxt.setText(thisWeekTopic.getTitle());
                             }
                         });
                     }
