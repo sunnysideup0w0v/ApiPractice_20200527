@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,9 @@ public class TopicReplyAdapter extends ArrayAdapter<TopicReply> {
         if(row==null){
             row = inf.inflate(R.layout.topic_reply_list_item, null);
         }
+        TextView contentTxt = row.findViewById(R.id.contentTxt);
+        TopicReply data = mList.get(position);
+        contentTxt.setText(data.getContent());
         return row;
     }
 }
