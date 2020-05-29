@@ -33,26 +33,33 @@
             android:paddingHorizontal="5dp"
             android:text="Lorem ipsum..."
             android:textColor="#000"/>
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="\? 분 전"
-            android:textColor="A0A0A0"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" n분 전"
+                android:textColor="#A0A0A0"/>
             <TextView
                 android:layout_marginLeft="10dp"
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="#DFDFDF"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="신고"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="15dp"
-            android:textSize="12sp"
-            android:textColor="#A0A0A0"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="신고"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:textSize="12sp"
+                android:textColor="#A0A0A0"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

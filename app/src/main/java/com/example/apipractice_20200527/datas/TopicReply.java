@@ -9,7 +9,7 @@ public class TopicReply {
     private String side;
 
 
-    public TopicReply getTopicReplyFromJson(JSONObject jsonObject){
+    public static TopicReply getTopicReplyFromJson(JSONObject jsonObject){
         TopicReply tp = new TopicReply();
         try {
             tp.id = jsonObject.getInt("id");

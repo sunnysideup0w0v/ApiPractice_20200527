@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.apipractice_20200527.Adapters.TopicReplyAdapter;
 import com.example.apipractice_20200527.databinding.ActivityMainBinding;
 import com.example.apipractice_20200527.datas.Topic;
+import com.example.apipractice_20200527.datas.TopicReply;
 import com.example.apipractice_20200527.datas.User;
 import com.example.apipractice_20200527.utils.ContextUtil;
 import com.example.apipractice_20200527.utils.ServerUtil;
@@ -22,8 +24,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends BaseActivity {
     ActivityMainBinding binding;
+    List<TopicReply> replyList = new ArrayList<>();
+    TopicReplyAdapter tra;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +83,10 @@ public class MainActivity extends BaseActivity {
                         final User me = User.getUserFromJson(user);
                         final Topic thisWeekTopic = Topic.getTopicFromJson(topic);
                         JSONArray replies = data.getJSONArray("replies");
+
                         for(int i=0;i<replies.length();i++){
                             JSONObject reply = replies.getJSONObject(i);
-
+                            replyList.add(TopicReply.getTopicReplyFromJson(reply));
                             Log.d("댓글내용", reply.getString("content"));
                         }
                         runOnUiThread(new Runnable() {
@@ -87,6 +96,7 @@ public class MainActivity extends BaseActivity {
                                 binding.emailTxt.setText(me.getEmail());
                                 Glide.with(mContext).load(thisWeekTopic.getImageUrl()).into(binding.topicImg);
                                 binding.topicTitleTxt.setText(thisWeekTopic.getTitle());
+                                tra.notifyDataSetChanged();
                             }
                         });
                     }
@@ -95,5 +105,9 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+
+        tra = new TopicReplyAdapter(mContext, R.layout.topic_reply_list_item, replyList);
+        binding.listView.setAdapter(tra);
+
     }
 }
