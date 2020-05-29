@@ -38,9 +38,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:visibility="gone"
             android:text="로그인한 사람의 닉네임"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/emailTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,9 +50,16 @@
             android:layout_marginTop="7dp"
             android:text="로그인한 사람의 이메일"/>
         <TextView
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <Button
             android:id="@+id/logOutBtn"
             android:layout_marginBottom="30sp"
