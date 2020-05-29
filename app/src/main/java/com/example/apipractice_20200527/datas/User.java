@@ -8,7 +8,7 @@ public class User {
     private String email;
     private String nickName;
 
-    public User getUserFromJson(JSONObject jsonObject){
+    public static User getUserFromJson(JSONObject jsonObject){
         User u = new User();
         try {
             u.id = jsonObject.getInt("id");

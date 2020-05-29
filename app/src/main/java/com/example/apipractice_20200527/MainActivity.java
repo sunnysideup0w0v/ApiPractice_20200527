@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.apipractice_20200527.databinding.ActivityMainBinding;
+import com.example.apipractice_20200527.datas.User;
 import com.example.apipractice_20200527.utils.ServerUtil;
 
 import org.json.JSONException;
@@ -37,11 +38,12 @@ public class MainActivity extends BaseActivity {
                     if(code==200){
                         JSONObject data = json.getJSONObject("data");
                         JSONObject user = data.getJSONObject("user");
-                        final String userNickName = user.getString("nick_name");
+                        final User me = User.getUserFromJson(user);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                binding.nickName.setText(userNickName);
+                                binding.nickName.setText(me.getNickName());
+                                binding.emailTxt.setText(me.getEmail());
                             }
                         });
                     }
