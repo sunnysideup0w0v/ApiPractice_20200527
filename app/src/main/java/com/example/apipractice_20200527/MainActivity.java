@@ -42,6 +42,16 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void setupEvents() {
+
+        binding.postReplyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(mContext,EditReplyActivity.class);
+//                myIntent.putExtra("topic", thisweektopic); > 여기도 고쳐야함
+               startActivity(myIntent);
+            }
+        });
+
         binding.logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
