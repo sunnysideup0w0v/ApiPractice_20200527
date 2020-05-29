@@ -35,8 +35,12 @@ public class TopicReplyAdapter extends ArrayAdapter<TopicReply> {
             row = inf.inflate(R.layout.topic_reply_list_item, null);
         }
         TextView contentTxt = row.findViewById(R.id.contentTxt);
+        TextView writerNickNameTxt = row.findViewById(R.id.writerNickNameTxt);
+
         TopicReply data = mList.get(position);
+
         contentTxt.setText(data.getContent());
+        writerNickNameTxt.setText(data.getWriter().getNickName());
         return row;
     }
 }
