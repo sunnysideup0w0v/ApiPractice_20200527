@@ -17,9 +17,9 @@ public class TopicReply {
             tr.id = jsonObject.getInt("id");
             tr.content = jsonObject.getString("content");
             tr.side = jsonObject.getString("side");
-//댓글 제이슨 안에 있는 user json 추출
+//              댓글 제이슨 안에 있는 user json 추출
             JSONObject user = jsonObject.getJSONObject("user");
-//             이 user Json으로 만든 User클래스로 변환하는 기능 사용~~
+//              이 user Json으로 만든 User클래스로 변환하는 기능 사용~~
 
             tr.writer = User.getUserFromJson(user);
 
